@@ -86,11 +86,8 @@
 
 
         <!--**************spring boot 相关类库**********************************-->
-        <!--  监控sql执行快慢-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-        </dependency>
+ 
+ 
         <!-- activeMq -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
