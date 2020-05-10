@@ -1,0 +1,26 @@
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:2001/eureka/
+logging:
+  level:
+    com:
+      gantang:
+        txmanager: debug
+server:
+  port: 4001
+spring:
+  application:
+    name: txmanager-service
+#  mail:
+#    host: smtp.qq.com
+#    port: 465
+#    username: 757724456@qq.com
+#    password: 17520148046
+tx-lcn:
+  logger:
+    enabled: true
+  manager:
+    port: 4101
+    admin-key: gantang

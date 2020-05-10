@@ -1,0 +1,36 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://127.0.0.1:2001/eureka/
+logging:
+  level:
+    com:
+      gantang:
+        core:
+          mapper: 'DEBUG '
+        order:
+          mapper: 'DEBUG '
+mybatis-plus:
+  mapper-locations: classpath:mapper/order/*.xml,mapper/core/*.xml
+  typeAliasesPackage: com.gantang
+server:
+  port: 3002
+  tomcat:
+    max-threads: 128
+    min-spare-threads: 64
+spring:
+  application:
+    name: order-service
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
+tx-lcn:
+  client:
+    manager-address: 127.0.0.1:4101
+web:
+  upload-path: /home/software/upload/finance/
+  #开启服务通断，默认6此重试后，则不再调用，直接熔断
+feign:
+  hystrix:
+    enabled: true

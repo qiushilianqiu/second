@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gantang.core.mapper.BaseCommonMapper">
+    <delete id="deleteByWhere">
+        delete from ${table}
+        where 1=1
+        <foreach collection="deleteList" item="item" index="index">
+            and ${item.key} = #{item.value}
+        </foreach>
+    </delete>
+    <delete id="deleteById">
+		delete from ${table}
+		where id = #{id}
+	</delete>
+    <update id="updateList">
+        update ${table} set
+        <foreach collection="list" item="item" index="index" separator=",">
+            ${item.key} = #{item.value}
+        </foreach>
+        where 1=1 ${conditionStr}
+    </update>
+    <update id="update">
+        update ${table} set
+        <foreach collection="list" item="item" index="index" separator=",">
+            ${item.key} = #{item.value}
+        </foreach>
+        where 1=1 ${conditionStr}
+    </update>
+    <update id="updateAll">
+        update ${table} set
+        <foreach collection="list" item="item" index="index" separator=",">
+            ${item.key} = #{item.value}
+        </foreach>
+        where 1=1
+    </update>
+    <update id="updateByWhere">
+        update ${table} set
+        <foreach collection="updateList" item="item" index="index" separator=",">
+            ${item.key} = #{item.value}
+        </foreach>
+        where 1=1
+        <foreach collection="whereList" item="item" index="index">
+            and ${item.key} = #{item.value}
+        </foreach>
+    </update>
+    <insert id="save">
+        insert into ${table}
+        <foreach collection="insertMap.keys" item="key" index="index" open="(" separator="," close=")">
+            ${key}
+        </foreach>
+        values
+        <foreach collection="insertMap.values" item="value" index="index" open="(" separator="," close=")">
+            #{value}
+        </foreach>
+    </insert>
+    <insert id="saveObject"  parameterType="java.util.Map"  >
+
+        insert into ${table}
+        <foreach collection="insertMap.keys" item="key" index="index" open="(" separator="," close=")">
+            ${key}
+        </foreach>
+        values
+        <foreach collection="insertMap.values" item="value" index="index" open="(" separator="," close=")">
+            #{value}
+        </foreach>
+
+    </insert>
+
+    <select id="selectById" resultType="java.util.Map">
+		select *
+		from ${table}
+		where id = #{id}
+	</select>
+    <select id="selectByWhere" resultType="java.util.Map">
+        select *
+        from ${table}
+        <if test=" list != null  and list.size > 0">
+            where 1=1
+            <foreach collection="list" item="item" index="index">
+                ${item.key} = #{item.value}
+            </foreach>
+        </if>
+    </select>
+    <select id="select" resultType="java.util.Map">
+        select *
+        from ${table}
+        <if test=" list != null  and list.size > 0">
+         where 1=1
+            <foreach collection="list" item="item" index="index">
+               and  ${item.key} = #{item.value}
+            </foreach>
+        </if>
+
+    </select>
+    <!--根据表明查询电表信息-->
+    <select id="getList" resultType="java.util.Map">
+        select
+        <if test="map.queryStr == '' or map.queryStr == null">
+            *
+        </if>
+        <if test="map.queryStr != '' and map.queryStr != null">
+            ${map.queryStr}
+        </if>
+        from ${map.table}
+        where 1=1
+        <if test="map.flag != '' and map.flag != null">
+            and flag=${map.flag}
+        </if>
+        <if test="map.app_rule_number != '' and map.app_rule_number != null">
+            and app_rule_number=#{map.app_rule_number}
+        </if>
+        <if test="map.zoneId != '' and map.zoneId != null">
+            and zone=#{map.zoneId}
+        </if>
+        <if test="map.zoneIdAccount != '' and map.zoneIdAccount != null">
+            and zone_id=#{map.zoneIdAccount}
+        </if>
+        <if test="map.delFlag != '' and map.delFlag != null">
+            and delFlag=#{map.delFlag}
+        </if>
+        <if test="map.parentid != '' and map.parentid != null">
+            and parentid=#{map.parentid}
+        </if>
+        <if test="map.secondid != '' and map.secondid != null">
+            and parentid=#{map.secondid}
+        </if>
+        <if test="map.areaId != '' and map.areaId != null">
+            and area_id=#{map.areaId}
+        </if>
+        <if test="map.useStatus != '' and map.useStatus != null">
+            and use_status=#{map.useStatus}
+        </if>
+        <if test="map.type != '' and map.type != null">
+            and type=#{map.type}
+        </if>
+        <if test="map.userId != '' and map.userId != null">
+            and id=#{map.userId}
+        </if>
+        <if test="map.id != '' and map.id != null">
+            and id=#{map.id}
+        </if>
+        <if test="map.dotProjectId != '' and map.dotProjectId!= null">
+            and dot_process_id=#{map.dotProjectId}
+        </if>
+        <if test="map.dot_process_id != '' and map.dot_process_id != null">
+            and dot_process_id=${map.dot_process_id}
+        </if>
+        <if test="map.task_id != '' and map.task_id != null">
+            and task_id=#{map.task_id,jdbcType=VARCHAR}
+        </if>
+        <if test="map.task_id != '' and map.task_id != null">
+            and task_id=#{map.task_id,jdbcType=VARCHAR}
+        </if>
+        <if test="map.code != '' and map.code != null">
+            and code=#{map.code,jdbcType=VARCHAR}
+        </if>
+        <if test="map.unitName != '' and map.unitName != null">
+            and unit_name like '%' + convert(varchar(50), #{map.unitName}) + '%'
+        </if>
+        <if test="map.mainId != '' and map.mainId != null">
+            and main_id =#{map.mainId}
+        </if>
+        <if test="map.invoiceOwner != '' and map.invoiceOwner != null">
+            and invoice_owner =#{map.invoiceOwner}
+        </if>
+        <if test="map.invoiceTypeCode != '' and map.invoiceTypeCode != null">
+            and invoice_type_code =#{map.invoiceTypeCode}
+        </if>
+        <if test="map.invoiceTypeName != '' and map.invoiceTypeName != null">
+            and invoice_type_name =#{map.invoiceTypeName}
+        </if>
+        <if test="map.financeUse != '' and map.financeUse != null">
+            and finance_use =#{map.financeUse}
+        </if>
+        <!-- 排序传参就在下面写 -->
+        <if test="map.tableZoneOrder != '' and map.tableZoneOrder != null">
+            order by create_time
+        </if>
+        <!-- 排序传参就在下面写 -->
+        <if test="map.orderbydate != '' and map.orderbydate != null">
+            order by billing_time desc
+        </if>
+    </select>
+    <!-- 查询审批意见 -->
+    <select id="getApproveOpinions" resultType="java.util.Map">
+        SELECT  o.*,
+        t.name ,
+        b.name orgname,
+        e.sendtype,
+        u.path
+        FROM
+        workflow_opinions o
+        LEFT JOIN user_tuser t ON o.approve_user = t.userid
+        LEFT JOIN employee_baseinfo e ON e.jobno = t.jobno
+        LEFT JOIN basedata_organization b ON b.orgid = e.org
+        LEFT JOIN user_tuser_signature u ON u.userid = t.userid
+        WHERE
+        o.data_table = #{table}
+        AND o.data_id = #{data_id} and o.flag='0'
+        ORDER BY o.approve_time ASC
+    </select>
+    <select id="getdictionlist" resultType="java.util.Map">
+        SELECT *
+        FROM
+        t_dictionary td
+        WHERE td.flag=1
+        <if test=" type!=  null and type !=  ''">
+            AND td.type= #{type}
+        </if>
+        <if test="  type_name!=  null and type_name !=  ''">
+            AND td.type_name= #{type_name}
+        </if>
+        <if test="  code!=  null and code !=  ''">
+            AND td.code= #{code}
+        </if>
+        <if test="  name!=  null and name !=  ''">
+            AND td.name= #{name}
+        </if>
+    </select>
+
+
+</mapper>

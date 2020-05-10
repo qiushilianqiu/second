@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gantang.management.mapper.OrderMapper">
+    <select id="getList" resultType="java.util.Map">
+<!-- 		select 
+			tla.*,u.user_name as apply_person_name,d.name as clean_type_name,s.user_name as supper_name
+		from order tla
+		left join t_user u on u.id=tla.apply_person
+		left join t_dictionary d on d.code=tla.clean_type
+		left join t_user s ON s.id= tla.supper_id
+		where 1=1 and d.type='cleanApply'-->
+				select  row_number()  over(order by tla.id ) indexId,
+			tla.*
+		from order tla
+where 1=1
+		<if test="code != null and code != ''">
+			and tla.code =#{code}
+		</if>
+		
+		<if test="type != null and type != ''">
+			and tla.type =#{type}
+		</if>
+		
+		<if test="modifier != null and modifier != ''">
+			and tla.modifier =#{modifier}
+		</if>
+		
+		<if test="modifyTime != null and modifyTime != ''">
+			and tla.modify_time =#{modifyTime}
+		</if>
+		
+		<if test="creater != null and creater != ''">
+			and tla.creater =#{creater}
+		</if>
+		
+		<if test="createTime != null and createTime != ''">
+			and tla.create_time =#{createTime}
+		</if>
+		
+		order by tla.id desc
+	</select>
+	
+	
+	    <update id="updateByPrimaryKeySelective" parameterType="com.gantang.entity.management.Order" >
+        update order
+        <set >
+ 		<if test="code != null and code != ''">
+			and code =#{code}
+		</if>
+		<if test="type != null and type != ''">
+			and type =#{type}
+		</if>
+		<if test="modifier != null and modifier != ''">
+			and modifier =#{modifier}
+		</if>
+		<if test="modifyTime != null and modifyTime != ''">
+			and modify_time =#{modifyTime}
+		</if>
+		<if test="creater != null and creater != ''">
+			and creater =#{creater}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			and create_time =#{createTime}
+		</if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
+
+
+
+
+

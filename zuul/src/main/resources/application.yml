@@ -1,0 +1,86 @@
+#\u5FAE\u670D\u52A1\u7BA1\u7406
+eureka:
+  client:
+    registry-fetch-interval-seconds: 5
+    serviceUrl:
+      defaultZone: http://127.0.0.1:2001/eureka/
+#\u9632\u6B62\u670D\u52A1\u8D85\u65F6,\u6B64\u5904\u8BBE\u7F6E\u4E3A6\u79D2\uFF0C\u65F6\u957F\u81EA\u5B9A\u4E49
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            ribbon:
+              ConnectTimeout: 6000000
+              ReadTimeout: 6000000
+            timeoutInMilliseconds: 60000
+        timeout:
+          enabled: true
+      circuitBreaker:
+        requestVolumeThreshold: 10
+  threadpool:
+    default:
+      allowMaximumSizeToDivergeFromCoreSize: true
+      coreSize: 100
+      maxQueueSize: -1
+      maximumSize: 5000
+ribbon:
+  ConnectTimeout: 6000000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  ReadTimeout: 6000000
+  eureka:
+    enabled: true
+server:
+  port: 2002
+  tomcat:
+    basedir: D:/upload/
+spring:
+  application:
+    name: zuul
+  mvc:
+    static-path-pattern: /**
+  redis:
+    database: 0
+    host: 127.0.0.1
+    jedis:
+      pool:
+        max-active: -1
+        max-idle: 500
+        max-wait: -1
+        min-idle: 0
+    password: oaking5036huihe123
+    port: 6379
+    timeout: 20000
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
+#\u9759\u6001\u8D44\u6E90
+web:
+  upload-path: /home/software/upload/finance/
+zuul:
+  host:
+    connect-timeout-millis: 10000
+    max-total-connections: 5000
+    socket-timeout-millis: 60000
+  ribbon:
+    eagerLoad:
+      enabled: true
+  ribbon-isolation-strategy: thread
+  routes:
+
+    #\u7518\u68E0\u7B2C\u4E09\u65B9\u63A5\u53E3\u670D\u52A1\u4E2D\u5FC3
+    api-interface:
+      path: /api/interface/**
+      sensitive-headers: Authorization
+      serviceId: interface-service
+      #\u5C0F\u7A0B\u5E8F\u670D\u52A1\u7BA1\u7406\u670D\u52A1
+    api-management:
+      path: /api/management/**
+      sensitive-headers: Authorization
+      serviceId: management-service
+      #\u7518\u68E0\u8BA2\u5355\u670D\u52A1\u4E2D\u5FC3
+    api-order:
+      path: /api/order/**
+      sensitive-headers: Authorization
+      serviceId: order-service

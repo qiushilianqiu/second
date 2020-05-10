@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gantang.interfaces.mapper.CommonMapper">
+
+    <select id="getDictionList" resultType="java.util.Map">
+        SELECT
+        d.*
+        FROM
+        t_dictionary d
+        WHERE
+        d.flag = 1
+        <if test="map.type !=  null and map.type !=  ''">
+            AND d.type= #{map.type}
+        </if>
+        <if test="map.type_name !=  null and map.type_name !=  ''">
+            AND d.type_name= #{map.type_name}
+        </if>
+        <if test="map.code !=  null and map.code !=  ''">
+            AND d.code= #{map.code}
+        </if>
+        <if test="map.name !=  null and map.name !=  ''">
+            AND d.name= #{map.name}
+        </if>
+    </select>
+    <!--根据表明查询电表信息-->
+    <select id="getEveryTableList" resultType="java.util.Map" >
+        select
+        <if test="map.queryStr == '' or map.queryStr == null">
+            *
+        </if>
+        <if test="map.queryStr != '' and map.queryStr != null">
+            ${map.queryStr}
+        </if>
+        from ${map.table}
+        where 1=1
+        <if test="map.flag != '' and map.flag != null">
+            and	flag=${map.flag}
+        </if>
+        <!-- 排序传参就在下面写 -->
+        <if test="map.tableZoneOrder != '' and map.tableZoneOrder != null">
+            order by create_time
+        </if>
+    </select>
+</mapper>
